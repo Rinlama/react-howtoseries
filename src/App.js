@@ -1,24 +1,40 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./App.css";
+import data from "./services/data";
 
 function App() {
-  const [foodState, setFoodState] = useState("dumpling");
+  const [foodState, setFoodState] = useState();
+
+  const onChangeComboBox = (e) => {
+    const selectedId = e.target.value;
+    const selectedFoodState = data.filter((d) => d.id == selectedId)[0];
+    setFoodState(selectedFoodState);
+  };
+
+  useEffect(() => {
+    setFoodState(data[1]);
+  }, []);
 
   return (
-    <div className="container p-5">
+    <div className="container m-5">
       <select
         className="custom-select"
-        value={foodState}
+        value={foodState?.id}
         onChange={(e) => {
-          const selectedFood = e.target.value;
-          setFoodState(selectedFood);
+          onChangeComboBox(e);
         }}
       >
-        <option value="steak">Steak</option>
-        <option value="sandwich">Sandwich</option>
-        <option value="dumpling">Dumpling</option>
+        {data.map((d) => (
+          <option key={d.id} value={d.id}>
+            {d.restaurant}
+          </option>
+        ))}
       </select>
-      {foodState}
+      {foodState ? (
+        <img src={foodState?.image} width="100%" height="300px" />
+      ) : (
+        ""
+      )}
     </div>
   );
 }
