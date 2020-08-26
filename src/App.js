@@ -7,6 +7,7 @@ import axios from "axios";
 
 function App() {
   const [rates, setRates] = useState([]);
+  const [base, setBase] = useState("USD");
 
   useEffect(() => {
     getRates("USD");
@@ -31,8 +32,10 @@ function App() {
             <h5 className="text-success">Base : </h5>
             <select
               className="custom-select"
+              value={base}
               onChange={(d) => {
                 const value = d.target.value;
+                setBase(value);
                 getRates(value);
               }}
             >
